@@ -10,7 +10,8 @@ import numpy as np
 import sys
 from argparse import ArgumentParser
 import mir_eval
-from sklearn.externals import joblib
+import joblib
+# from sklearn.externals import joblib
 from sklearn.mixture import GaussianMixture
 from statistics import median
 from onoffset_modules import *
@@ -382,7 +383,8 @@ with open(data_file, 'r') as fd:
     data_np = np.transpose(data_np)
     #data_np = data_np.reshape((1,-1))
     data_np = data_np.reshape((1, -1, int(args.feat_num//3), 174*3)).transpose((0,2,3,1))
-    data = torch.from_numpy(data_np).type(torch.FloatTensor).cuda()
+    # data = torch.from_numpy(data_np).type(torch.FloatTensor).cuda()
+    data = torch.from_numpy(data_np).type(torch.FloatTensor).cpu()
 
 with open(p_file, 'r') as fp:
     p_np = np.loadtxt(fp)
@@ -412,9 +414,11 @@ resnet18.avgpool = nn.AvgPool2d(kernel_size=(17,1), stride=1, padding=0)
 
 onDec = resnet18
 
-onDec.load_state_dict(torch.load(on_dec_model_file))
+# onDec.load_state_dict(torch.load(on_dec_model_file))
+onDec.load_state_dict(torch.load(on_dec_model_file, map_location=torch.device('cpu')))
 
-onDec.cuda()
+# onDec.cuda()
+onDec.cpu()
 
 #----------------------------
 # Evaluation

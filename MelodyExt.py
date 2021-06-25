@@ -8,6 +8,7 @@ import soundfile as sf
 import numpy as np
 import scipy
 import scipy.signal
+import scipy.fftpack
 import argparse
 from keras.models import load_model
 
@@ -15,7 +16,7 @@ def STFT(x, fr, fs, Hop, h):
     t = np.arange(Hop, np.ceil(len(x)/float(Hop))*Hop, Hop)
     N = int(fs/float(fr))
     window_size = len(h)
-    f = fs*np.linspace(0, 0.5, np.round(N/2), endpoint=True)
+    f = fs*np.linspace(0, 0.5, int(np.round(N/2)), endpoint=True)
     Lh = int(np.floor(float(window_size-1) / 2))
     tfr = np.zeros((int(N), len(t)), dtype=np.float)     
         
