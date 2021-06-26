@@ -28,8 +28,7 @@ for f_idx in range(f.shape[0]):
     # Retrieve the MIDI note number for this note name
     note_pitch = int(round(pretty_midi.hz_to_note_number(f[f_idx])))
     if note_pitch > 127 or note_pitch < 0:
-        print(note_pitch)
-        input("OMG !!")
+        print("WARNING. Note pitch is invalid:", note_pitch)
         note_pitch = 0 if note_pitch < 0 else 127
     #note_number = pretty_midi.note_name_to_number(note_name)
     # Create a Note instance, starting at 0s and ending at .5s
